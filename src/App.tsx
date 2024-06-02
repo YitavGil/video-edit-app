@@ -13,18 +13,18 @@ interface VideoFile {
 
 const App: React.FC = () => {
   const [videos, setVideos] = useState<VideoFile[]>([]);
-  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]); // Change to array of strings
   const [timelineVideos, setTimelineVideos] = useState<VideoFile[]>([]);
 
   const handleFileUpload = async (file: File) => {
     const fileURL = URL.createObjectURL(file);
-    const duration = await getVideoDuration(file); // Get the actual duration of the video
+    const duration = await getVideoDuration(file);
     
     const newVideo = { name: file.name, url: fileURL, duration };
     setVideos([...videos, newVideo]);
-    setPreviewUrl(fileURL); // Automatically set the preview URL to the newly uploaded video
+    setPreviewUrls([fileURL]); // Set as array with one URL
   };
-  
+
   async function getVideoDuration(file: File): Promise<number> {
     return new Promise((resolve, reject) => {
       const video = document.createElement('video');
@@ -41,23 +41,21 @@ const App: React.FC = () => {
   }
 
   const handlePreview = (url: string) => {
-    setPreviewUrl(url); // Update the preview URL when a video from the list is selected
+    setPreviewUrls([url]); // Set as array with one URL
   };
 
   const handleDrop = (video: VideoFile) => {
     setTimelineVideos(prevTimelineVideos => {
-      // Calculate the start time of the new video
       let totalDuration = 0;
       prevTimelineVideos.forEach(v => (totalDuration += v.duration));
       const startTime = totalDuration;
   
-      // Add the new video to the timeline with its start time
       const newVideo = { ...video, startTime };
       return [...prevTimelineVideos, newVideo];
     });
   };
 
-  const handleRemove = (videoName: string, index: number) => {
+  const handleRemove = (index: number) => {
     const updatedTimelineVideos = timelineVideos.filter(
       (_, idx) => idx !== index
     );
@@ -66,14 +64,9 @@ const App: React.FC = () => {
 
   const handlePlay = () => {
     // Call play function for each video in the timelineVideos array
-    timelineVideos.forEach(video => playVideo(video.url));
+    const videoArray = timelineVideos.map(video => video.url);
+    setPreviewUrls(videoArray);
   };
-
-  const playVideo = (videoUrl: string) => {
-    setPreviewUrl(videoUrl);
-  };
-
-  
 
   return (
     <DndProvider backend={HTML5Backend}>
@@ -81,7 +74,7 @@ const App: React.FC = () => {
         <VideoUpload onUpload={handleFileUpload} />
         <Main
           videos={videos}
-          previewUrl={previewUrl}
+          previewUrls={previewUrls} // Change prop name to previewUrls
           onPreview={handlePreview}
           onDrop={handleDrop}
           onPlay={handlePlay}

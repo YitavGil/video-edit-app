@@ -11,7 +11,7 @@ interface VideoFile {
 interface TimelineProps {
   videos: VideoFile[];
   onDrop: (video: VideoFile) => void;
-  onRemove: (videoName: string, index: number) => void; // Update the interface to accept index parameter
+  onRemove: (index: number) => void; // Update the interface to accept index parameter
 }
 
 const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
@@ -36,8 +36,8 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
     setCursorPosition(time);
   };
 
-  const handleRemoveVideo = (videoName: string, index: number) => {
-    onRemove(videoName, index);
+  const handleRemoveVideo = (index: number) => {
+    onRemove(index);
   };
 
   return (
@@ -66,7 +66,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
             <span>{video.name}</span>
             <button
               className="absolute top-0 right-0 text-red-500 bg-transparent border-none"
-              onClick={() => handleRemoveVideo(video.name, index)}
+              onClick={() => handleRemoveVideo(index)}
             >
               <FaTimes />
             </button>
