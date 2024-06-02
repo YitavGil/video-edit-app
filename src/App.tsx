@@ -1,33 +1,75 @@
-import "./App.css";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { DndProvider } from "react-dnd";
+import { HTML5Backend } from "react-dnd-html5-backend";
 import { VideoUpload } from "./components";
 import Main from "./sections/Main";
+import Timeline from "./components/timeline/Timeline";
 
 interface VideoFile {
   name: string;
   url: string;
+  duration: number; // in seconds
 }
 
 const App: React.FC = () => {
   const [videos, setVideos] = useState<VideoFile[]>([]);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [timelineVideos, setTimelineVideos] = useState<VideoFile[]>([]);
 
   const handleFileUpload = (file: File) => {
     const fileURL = URL.createObjectURL(file);
-    const newVideo = { name: file.name, url: fileURL };
+    // Assume all videos are 5 seconds for this example
+    const newVideo = { name: file.name, url: fileURL, duration: 5 };
     setVideos([...videos, newVideo]);
-    setPreviewUrl(fileURL);  // Automatically set the preview URL to the newly uploaded video
+    setPreviewUrl(fileURL); // Automatically set the preview URL to the newly uploaded video
   };
 
   const handlePreview = (url: string) => {
-    setPreviewUrl(url);  // Update the preview URL when a video from the list is selected
+    setPreviewUrl(url); // Update the preview URL when a video from the list is selected
+  };
+
+  const handleDrop = (video: VideoFile) => {
+    setTimelineVideos(prevTimelineVideos => {
+      // Calculate the start time of the new video
+      let totalDuration = 0;
+      prevTimelineVideos.forEach(v => (totalDuration += v.duration));
+      const startTime = totalDuration;
+  
+      // Add the new video to the timeline with its start time
+      const newVideo = { ...video, startTime };
+      return [...prevTimelineVideos, newVideo];
+    });
+  };
+  
+
+  useEffect(() => {
+    console.log(timelineVideos);
+  }, [timelineVideos]);
+
+  const handleRemove = (videoName: string, index: number) => {
+    const updatedTimelineVideos = timelineVideos.filter(
+      (_, idx) => idx !== index
+    );
+    setTimelineVideos(updatedTimelineVideos);
   };
 
   return (
-    <div>
-      <VideoUpload onUpload={handleFileUpload} />
-      <Main videos={videos} previewUrl={previewUrl} onPreview={handlePreview} />
-    </div>
+    <DndProvider backend={HTML5Backend}>
+      <div>
+        <VideoUpload onUpload={handleFileUpload} />
+        <Main
+          videos={videos}
+          previewUrl={previewUrl}
+          onPreview={handlePreview}
+          onDrop={handleDrop}
+        />
+        <Timeline
+          videos={timelineVideos}
+          onDrop={handleDrop}
+          onRemove={handleRemove} // Pass the handleRemove function to the Timeline component
+        />
+      </div>
+    </DndProvider>
   );
 };
 
