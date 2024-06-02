@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useDrop } from 'react-dnd';
-import { FaTimes } from 'react-icons/fa';
+import React, { useState } from "react";
+import { useDrop } from "react-dnd";
+import { FaTimes } from "react-icons/fa";
 
 interface VideoFile {
   name: string;
@@ -9,16 +9,16 @@ interface VideoFile {
 }
 
 interface TimelineProps {
-    videos: VideoFile[];
-    onDrop: (video: VideoFile) => void;
-    onRemove: (videoName: string, index: number) => void; // Update the interface to accept index parameter
-  }
+  videos: VideoFile[];
+  onDrop: (video: VideoFile) => void;
+  onRemove: (videoName: string, index: number) => void; // Update the interface to accept index parameter
+}
 
 const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
   const [cursorPosition, setCursorPosition] = useState<number>(0);
 
   const [{ isOver }, drop] = useDrop(() => ({
-    accept: 'VIDEO',
+    accept: "VIDEO",
     drop: (item: VideoFile) => {
       onDrop(item);
     },
@@ -27,7 +27,9 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
     }),
   }));
 
-  const handleCursorPositionChange = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+  const handleCursorPositionChange = (
+    e: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
     const rect = e.currentTarget.getBoundingClientRect();
     const position = e.clientX - rect.left;
     const time = Math.floor((position / rect.width) * 100);
@@ -38,13 +40,12 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
     onRemove(videoName, index);
   };
 
-  console.log(videos);
-  
-
   return (
     <div
       ref={drop}
-      className={`mt-4 p-4 border border-gray-300 rounded-lg w-full h-30 ${isOver ? 'bg-gray-100' : ''}`}
+      className={`mt-4 p-4 border border-gray-300 rounded-lg w-full h-30 ${
+        isOver ? "bg-gray-100" : ""
+      }`}
       onClick={handleCursorPositionChange}
     >
       <h2 className="text-xl mb-2">Timeline</h2>
@@ -71,7 +72,10 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
             </button>
           </div>
         ))}
-        <div className="absolute top-0 left-0 h-full w-px bg-red-500" style={{ left: `${cursorPosition}%` }}></div>
+        <div
+          className="absolute top-0 left-0 h-full w-px bg-red-500"
+          style={{ left: `${cursorPosition}%` }}
+        ></div>
       </div>
     </div>
   );

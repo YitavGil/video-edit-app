@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import { VideoUpload } from "./components";
@@ -16,13 +16,29 @@ const App: React.FC = () => {
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
   const [timelineVideos, setTimelineVideos] = useState<VideoFile[]>([]);
 
-  const handleFileUpload = (file: File) => {
+  const handleFileUpload = async (file: File) => {
     const fileURL = URL.createObjectURL(file);
-    // Assume all videos are 5 seconds for this example
-    const newVideo = { name: file.name, url: fileURL, duration: 5 };
+    const duration = await getVideoDuration(file); // Get the actual duration of the video
+    
+    const newVideo = { name: file.name, url: fileURL, duration };
     setVideos([...videos, newVideo]);
     setPreviewUrl(fileURL); // Automatically set the preview URL to the newly uploaded video
   };
+  
+  async function getVideoDuration(file: File): Promise<number> {
+    return new Promise((resolve, reject) => {
+      const video = document.createElement('video');
+      video.preload = 'metadata';
+      video.onloadedmetadata = () => {
+        window.URL.revokeObjectURL(video.src); // Clean up
+        resolve(Math.round(video.duration)); // Convert duration to seconds and round off
+      };
+      video.onerror = (error) => {
+        reject(error);
+      };
+      video.src = URL.createObjectURL(file);
+    });
+  }
 
   const handlePreview = (url: string) => {
     setPreviewUrl(url); // Update the preview URL when a video from the list is selected
@@ -49,21 +65,16 @@ const App: React.FC = () => {
   };
 
   const handlePlay = () => {
-    let index = 0;
-    const videoPlayer = document.createElement('video');
-  
-    const playNextVideo = () => {
-      if (index < timelineVideos.length) {
-        const video = timelineVideos[index];
-        videoPlayer.src = video.url;
-        videoPlayer.play();
-        videoPlayer.onended = playNextVideo;
-        index++;
-      }
-    };
-  
-    playNextVideo();
+    // Call play function for each video in the timelineVideos array
+    timelineVideos.forEach(video => playVideo(video.url));
   };
+
+  const playVideo = (videoUrl: string) => {
+    setPreviewUrl(videoUrl);
+  };
+
+  
+
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
@@ -73,7 +84,7 @@ const App: React.FC = () => {
           previewUrl={previewUrl}
           onPreview={handlePreview}
           onDrop={handleDrop}
-          onPlay={handlePlay} // Pass the handlePlay function to the Main component
+          onPlay={handlePlay}
         />
         <Timeline
           videos={timelineVideos}

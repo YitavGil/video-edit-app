@@ -1,6 +1,7 @@
 import React from 'react';
 import VideoList from '../components/video/VideoList';
 import VideoPreview from '../components/video/VideoPreview';
+import PlayButton from '../components/UI/PlayButton';
 
 interface VideoFile {
   name: string;
@@ -28,13 +29,7 @@ const Main: React.FC<MainProps> = ({ videos, previewUrl, onPreview, onDrop, onPl
       </div>
       <div className="flex-1">
         <VideoPreview videoUrl={previewUrl} />
-        <button
-          className="bg-blue-500 text-white py-2 px-4 rounded focus:outline-none mt-4"
-          onClick={handlePlayClick}
-          disabled={videos.length === 0} // Disable the button if no videos are in the timeline
-        >
-          Play
-        </button>
+        <PlayButton onClick={handlePlayClick} disabled={videos.length === 0} /> {/* PlayButton component */}
       </div>
     </div>
   );
