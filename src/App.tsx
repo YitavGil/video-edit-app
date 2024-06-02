@@ -40,11 +40,6 @@ const App: React.FC = () => {
       return [...prevTimelineVideos, newVideo];
     });
   };
-  
-
-  useEffect(() => {
-    console.log(timelineVideos);
-  }, [timelineVideos]);
 
   const handleRemove = (videoName: string, index: number) => {
     const updatedTimelineVideos = timelineVideos.filter(
@@ -53,6 +48,22 @@ const App: React.FC = () => {
     setTimelineVideos(updatedTimelineVideos);
   };
 
+  const handlePlay = () => {
+    let index = 0;
+    const videoPlayer = document.createElement('video');
+  
+    const playNextVideo = () => {
+      if (index < timelineVideos.length) {
+        const video = timelineVideos[index];
+        videoPlayer.src = video.url;
+        videoPlayer.play();
+        videoPlayer.onended = playNextVideo;
+        index++;
+      }
+    };
+  
+    playNextVideo();
+  };
   return (
     <DndProvider backend={HTML5Backend}>
       <div>
@@ -62,11 +73,12 @@ const App: React.FC = () => {
           previewUrl={previewUrl}
           onPreview={handlePreview}
           onDrop={handleDrop}
+          onPlay={handlePlay} // Pass the handlePlay function to the Main component
         />
         <Timeline
           videos={timelineVideos}
           onDrop={handleDrop}
-          onRemove={handleRemove} // Pass the handleRemove function to the Timeline component
+          onRemove={handleRemove}
         />
       </div>
     </DndProvider>

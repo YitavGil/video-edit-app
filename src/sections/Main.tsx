@@ -13,9 +13,14 @@ interface MainProps {
   previewUrl: string | null;
   onPreview: (url: string) => void;
   onDrop: (video: VideoFile) => void;
+  onPlay: () => void; // New prop for handling the play functionality
 }
 
-const Main: React.FC<MainProps> = ({ videos, previewUrl, onPreview, onDrop }) => {
+const Main: React.FC<MainProps> = ({ videos, previewUrl, onPreview, onDrop, onPlay }) => {
+  const handlePlayClick = () => {
+    onPlay(); // Invoke the play function passed from the parent component
+  };
+
   return (
     <div className="flex flex-col md:flex-row flex-1">
       <div className="flex-1">
@@ -23,6 +28,13 @@ const Main: React.FC<MainProps> = ({ videos, previewUrl, onPreview, onDrop }) =>
       </div>
       <div className="flex-1">
         <VideoPreview videoUrl={previewUrl} />
+        <button
+          className="bg-blue-500 text-white py-2 px-4 rounded focus:outline-none mt-4"
+          onClick={handlePlayClick}
+          disabled={videos.length === 0} // Disable the button if no videos are in the timeline
+        >
+          Play
+        </button>
       </div>
     </div>
   );
