@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import VideoList from '../components/video/VideoList';
 import VideoPreview from '../components/video/VideoPreview';
 
@@ -10,26 +10,17 @@ interface VideoFile {
 interface MainProps {
   videos: VideoFile[];
   previewUrl: string | null;
+  onPreview: (url: string) => void;
 }
 
-const Main: React.FC<MainProps> = ({ videos, previewUrl }) => {
-  const [currentPreviewUrl, setCurrentPreviewUrl] = useState<string | null>(null);
-
-  useEffect(() => {
-    setCurrentPreviewUrl(previewUrl);
-  }, [previewUrl]);
-
-  const handlePreview = (url: string) => {
-    setCurrentPreviewUrl(url);
-  };
-
+const Main: React.FC<MainProps> = ({ videos, previewUrl, onPreview }) => {
   return (
     <div className="flex flex-col md:flex-row">
       <div className="flex-1">
-        <VideoList videos={videos} onPreview={handlePreview} />
+        <VideoList videos={videos} onPreview={onPreview} />
       </div>
       <div className="flex-1">
-        <VideoPreview videoUrl={currentPreviewUrl} />
+        <VideoPreview videoUrl={previewUrl} />
       </div>
     </div>
   );

@@ -16,13 +16,17 @@ const App: React.FC = () => {
     const fileURL = URL.createObjectURL(file);
     const newVideo = { name: file.name, url: fileURL };
     setVideos([...videos, newVideo]);
-    setPreviewUrl(fileURL);  // Set the preview URL to the newly uploaded video
+    setPreviewUrl(fileURL);  // Automatically set the preview URL to the newly uploaded video
+  };
+
+  const handlePreview = (url: string) => {
+    setPreviewUrl(url);  // Update the preview URL when a video from the list is selected
   };
 
   return (
     <div>
       <VideoUpload onUpload={handleFileUpload} />
-      <Main videos={videos} previewUrl={previewUrl} />
+      <Main videos={videos} previewUrl={previewUrl} onPreview={handlePreview} />
     </div>
   );
 };
