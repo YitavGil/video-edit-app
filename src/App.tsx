@@ -8,30 +8,30 @@ import Timeline from "./components/timeline/Timeline";
 interface VideoFile {
   name: string;
   url: string;
-  duration: number; // in seconds
+  duration: number;
 }
 
 const App: React.FC = () => {
   const [videos, setVideos] = useState<VideoFile[]>([]);
-  const [previewUrls, setPreviewUrls] = useState<string[]>([]); // Change to array of strings
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [timelineVideos, setTimelineVideos] = useState<VideoFile[]>([]);
 
   const handleFileUpload = async (file: File) => {
     const fileURL = URL.createObjectURL(file);
     const duration = await getVideoDuration(file);
-    
+
     const newVideo = { name: file.name, url: fileURL, duration };
     setVideos([...videos, newVideo]);
-    setPreviewUrls([fileURL]); // Set as array with one URL
+    setPreviewUrls([fileURL]);
   };
 
   async function getVideoDuration(file: File): Promise<number> {
     return new Promise((resolve, reject) => {
-      const video = document.createElement('video');
-      video.preload = 'metadata';
+      const video = document.createElement("video");
+      video.preload = "metadata";
       video.onloadedmetadata = () => {
-        window.URL.revokeObjectURL(video.src); // Clean up
-        resolve(Math.round(video.duration)); // Convert duration to seconds and round off
+        window.URL.revokeObjectURL(video.src);
+        resolve(Math.round(video.duration));
       };
       video.onerror = (error) => {
         reject(error);
@@ -41,15 +41,15 @@ const App: React.FC = () => {
   }
 
   const handlePreview = (url: string) => {
-    setPreviewUrls([url]); // Set as array with one URL
+    setPreviewUrls([url]);
   };
 
   const handleDrop = (video: VideoFile) => {
-    setTimelineVideos(prevTimelineVideos => {
+    setTimelineVideos((prevTimelineVideos) => {
       let totalDuration = 0;
-      prevTimelineVideos.forEach(v => (totalDuration += v.duration));
+      prevTimelineVideos.forEach((v) => (totalDuration += v.duration));
       const startTime = totalDuration;
-  
+
       const newVideo = { ...video, startTime };
       return [...prevTimelineVideos, newVideo];
     });
@@ -63,8 +63,7 @@ const App: React.FC = () => {
   };
 
   const handlePlay = () => {
-    // Call play function for each video in the timelineVideos array
-    const videoArray = timelineVideos.map(video => video.url);
+    const videoArray = timelineVideos.map((video) => video.url);
     setPreviewUrls(videoArray);
   };
 
@@ -74,7 +73,7 @@ const App: React.FC = () => {
         <VideoUpload onUpload={handleFileUpload} />
         <Main
           videos={videos}
-          previewUrls={previewUrls} // Change prop name to previewUrls
+          previewUrls={previewUrls}
           onPreview={handlePreview}
           onDrop={handleDrop}
           onPlay={handlePlay}

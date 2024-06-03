@@ -55,13 +55,14 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
             key={second}
             className="absolute top-0 left-0 h-full w-px bg-gray-400"
             style={{ left: `${second}%` }}
-          ></div>
+          >
+          </div>
         ))}
         {videos.map((video, index) => (
           <div
             key={`${video.name}-${index}`} // Unique identifier for each video entry
             className="absolute top-0 left-0 bg-blue-500 text-white text-center"
-            style={{ width: `${video.duration}%`, left: `${index * 10}%` }}
+            style={{ width: `${video.duration - 1}%`, left: `${index * video.duration}%` }}
           >
             <span>{video.name}</span>
             <button

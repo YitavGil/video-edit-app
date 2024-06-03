@@ -2,19 +2,17 @@ import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 
 interface VideoPreviewProps {
-  videoUrls: string[]; // Change prop name to videoUrls
+  videoUrls: string[];
 }
 
 const VideoPreview: React.FC<VideoPreviewProps> = ({ videoUrls }) => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-
+  
   useEffect(() => {
-    // Reset to the first video when the videoUrls change
     setCurrentVideoIndex(0);
   }, [videoUrls]);
 
   const handleEnded = () => {
-    // Move to the next video when the current video ends
     setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videoUrls.length);
   };
 
@@ -23,13 +21,13 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({ videoUrls }) => {
       <h2 className="text-xl mb-4">Video Preview</h2>
       {videoUrls.length > 0 ? (
         <ReactPlayer
+          key={videoUrls.join(',')} // Use key prop to force re-mount on urls change
           url={videoUrls[currentVideoIndex]}
           controls
           width="100%"
           height="auto"
-          style={{ maxWidth: '100%', maxHeight: '100%' }}
           playing
-          onEnded={handleEnded} // Call handleEnded when the video ends
+          onEnded={handleEnded}
         />
       ) : (
         <div className="flex items-center justify-center w-full h-64 bg-gray-200 relative">

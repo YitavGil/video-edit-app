@@ -1,3 +1,5 @@
+// Main.tsx
+
 import React from 'react';
 import VideoList from '../components/video/VideoList';
 import VideoPreview from '../components/video/VideoPreview';
@@ -21,7 +23,6 @@ const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onDrop, onP
   const handlePlayClick = () => {
     onPlay(); // Invoke the play function passed from the parent component
   };
-  
 
   return (
     <div className="flex flex-col md:flex-row flex-1">
