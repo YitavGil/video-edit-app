@@ -37,7 +37,7 @@ const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onDrop, onP
 
 
   return (
-    <div className="flex flex-col md:flex-row flex-1">
+    <div className="flex flex-col md:flex-row flex-1 px-4">
       <div className="flex-1">
         <VideoList videos={videos} onPreview={onPreview} />
       </div>

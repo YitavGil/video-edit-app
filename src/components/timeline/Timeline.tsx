@@ -79,7 +79,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
           {videos.map((video, index) => (
             <div
               key={`${video.name}-${index}`}
-              className="absolute top-0 left-0 bg-blue-500 text-white text-center"
+              className="absolute top-0 left-0 bg-orange-500 text-white text-center"
               style={{
                 width: `${video.duration * zoomLevel}%`,
                 left: `${index * video.duration * zoomLevel}%`,
@@ -87,7 +87,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
             >
               <span>{video.name}</span>
               <button
-                className="absolute top-0 right-0 text-red-500 bg-transparent border-none"
+                className="absolute top-0 right-0 text-red-800 bg-transparent border-none"
                 onClick={() => handleRemoveVideo(index)}
               >
                 <FaTimes />
@@ -95,7 +95,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
             </div>
           ))}
           <div
-            className="absolute top-0 left-0 h-full w-px bg-red-500"
+            className="absolute top-0 left-0 h-full w-px bg-red-800"
             style={{ left: `${cursorPosition * zoomLevel}%` }}
           ></div>
         </div>

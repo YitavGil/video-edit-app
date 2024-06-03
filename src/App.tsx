@@ -83,11 +83,13 @@ const App: React.FC = () => {
           playing={playing} // Pass playing state to Main
           timelineVideos={timelineVideos}
         />
+        <div className="px-4">
         <Timeline
           videos={timelineVideos}
           onDrop={handleDrop}
           onRemove={handleRemove}
         />
+        </div>
       </div>
     </DndProvider>
   );

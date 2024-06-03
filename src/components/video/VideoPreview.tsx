@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 
+
 interface VideoPreviewProps {
   videoUrls: string[];
   playing: boolean; // Add playing prop

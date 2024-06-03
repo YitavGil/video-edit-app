@@ -12,10 +12,10 @@ const VideoUpload: React.FC<{ onUpload: (file: File) => void }> = ({ onUpload })
     <nav className="flex items-center justify-between p-4 bg-gray-800 text-white">
       <h1 className="text-xl">Video Editor</h1>
       <label className="relative cursor-pointer text-blue-500">
-        <span className="bg-blue-500 text-white py-2 px-4 rounded-lg">Upload</span>
+        <span className="bg-orange-500 text-white py-2 px-4 rounded-lg">Upload</span>
         <input
           type="file"
-          accept="video/*"
+          accept="video/*"  
           className="absolute inset-0 opacity-0 cursor-pointer"
           onChange={handleFileChange}
         />
