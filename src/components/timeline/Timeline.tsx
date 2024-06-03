@@ -69,7 +69,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
           key={`${video.name}-${index}`}
           className="absolute top-0 bg-orange-500 text-white text-center truncate"
           style={{
-            width: `${widthPercentage}%`,
+            width: `${widthPercentage - 1}%`,
             left: `${leftPosition}%`,
           }}
         >
@@ -88,7 +88,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
   return (
     <div
       ref={drop}
-      className={`mt-4 p-4 border border-gray-300 rounded-lg w-full h-30 ${
+      className={`mt-4 p-4 border border-gray-300 rounded-lg overflow-hidden w-full h-30 ${
         isOver ? "bg-gray-100" : ""
       }`}
       onClick={handleCursorPositionChange}
