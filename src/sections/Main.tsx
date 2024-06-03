@@ -19,7 +19,7 @@ interface MainProps {
   timelineVideos: VideoFile[]
 }
 
-const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onDrop, onPlay, playing, timelineVideos }) => {
+const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onPlay, playing, timelineVideos }) => {
   const [isPlaying, setIsPlaying] = useState(playing);
 
   useEffect(() => {
