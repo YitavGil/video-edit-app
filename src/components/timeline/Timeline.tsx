@@ -34,11 +34,13 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
   };
 
   const handleZoomOut = () => {
+    if(timelineScale===1) return
     if (timelineScale > 0.1) {
       // Ensure scale doesn't go negative
       setTimelineScale((prevScale) => prevScale - 0.1); // Decrease scale by 0.1
     }
   };
+console.log(timelineScale);
 
   const handleCursorPositionChange = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
