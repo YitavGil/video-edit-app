@@ -1,5 +1,3 @@
-// Main.tsx
-
 import React from 'react';
 import VideoList from '../components/video/VideoList';
 import VideoPreview from '../components/video/VideoPreview';
@@ -8,20 +6,21 @@ import PlayButton from '../components/UI/PlayButton';
 interface VideoFile {
   name: string;
   url: string;
-  duration: number; // in seconds
+  duration: number;
 }
 
 interface MainProps {
   videos: VideoFile[];
-  previewUrls: string[]; // Change prop name to previewUrls
+  previewUrls: string[];
   onPreview: (url: string) => void;
   onDrop: (video: VideoFile) => void;
-  onPlay: () => void; // New prop for handling the play functionality
+  onPlay: () => void;
+  playing: boolean; // Add playing prop
 }
 
-const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onDrop, onPlay }) => {
+const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onDrop, onPlay, playing }) => {
   const handlePlayClick = () => {
-    onPlay(); // Invoke the play function passed from the parent component
+    onPlay();
   };
 
   return (
@@ -30,8 +29,8 @@ const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onDrop, onP
         <VideoList videos={videos} onPreview={onPreview} />
       </div>
       <div className="flex-1">
-        <VideoPreview videoUrls={previewUrls} /> {/* Change prop name to videoUrls */}
-        <PlayButton onClick={handlePlayClick} disabled={videos.length === 0} /> {/* PlayButton component */}
+        <VideoPreview videoUrls={previewUrls} playing={playing} /> {/* Pass playing prop */}
+        <PlayButton onClick={handlePlayClick} disabled={videos.length === 0} />
       </div>
     </div>
   );

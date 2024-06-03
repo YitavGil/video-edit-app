@@ -3,11 +3,12 @@ import ReactPlayer from 'react-player';
 
 interface VideoPreviewProps {
   videoUrls: string[];
+  playing: boolean; // Add playing prop
 }
 
-const VideoPreview: React.FC<VideoPreviewProps> = ({ videoUrls }) => {
+const VideoPreview: React.FC<VideoPreviewProps> = ({ videoUrls, playing }) => {
   const [currentVideoIndex, setCurrentVideoIndex] = useState(0);
-  
+
   useEffect(() => {
     setCurrentVideoIndex(0);
   }, [videoUrls]);
@@ -21,12 +22,12 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({ videoUrls }) => {
       <h2 className="text-xl mb-4">Video Preview</h2>
       {videoUrls.length > 0 ? (
         <ReactPlayer
-          key={videoUrls.join(',')} // Use key prop to force re-mount on urls change
+          key={videoUrls.join(',')}
           url={videoUrls[currentVideoIndex]}
           controls
           width="100%"
           height="auto"
-          playing
+          playing={playing} // Use playing prop to control playback
           onEnded={handleEnded}
         />
       ) : (

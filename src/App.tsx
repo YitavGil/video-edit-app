@@ -15,6 +15,7 @@ const App: React.FC = () => {
   const [videos, setVideos] = useState<VideoFile[]>([]);
   const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [timelineVideos, setTimelineVideos] = useState<VideoFile[]>([]);
+  const [playing, setPlaying] = useState<boolean>(false); // Add playing state
 
   const handleFileUpload = async (file: File) => {
     const fileURL = URL.createObjectURL(file);
@@ -60,11 +61,13 @@ const App: React.FC = () => {
       (_, idx) => idx !== index
     );
     setTimelineVideos(updatedTimelineVideos);
+    setPlaying(false); // Stop playing when a video is removed
   };
 
   const handlePlay = () => {
     const videoArray = timelineVideos.map((video) => video.url);
     setPreviewUrls(videoArray);
+    setPlaying(true); // Start playing when the Play button is pressed
   };
 
   return (
@@ -77,6 +80,7 @@ const App: React.FC = () => {
           onPreview={handlePreview}
           onDrop={handleDrop}
           onPlay={handlePlay}
+          playing={playing} // Pass playing state to Main
         />
         <Timeline
           videos={timelineVideos}
