@@ -61,7 +61,8 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
     return videos.map((video, index) => {
       const trimmedName =
         video.name.length > 10 ? `${video.name.slice(0, 10)}...` : video.name;
-      const leftPosition = (accumulatedTime / maxTime) * 100 * timelineScale; // Adjust left position based on scale
+      const leftPosition =
+        (accumulatedTime / maxTime) * 100 * timelineScale; // Adjust left position based on scale
       const widthPercentage =
         (video.duration / maxTime) * 100 * timelineScale; // Adjust width based on scale
       accumulatedTime += video.duration;
@@ -70,8 +71,8 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
           key={`${video.name}-${index}`}
           className="absolute top-0 bg-orange-500 text-white text-center truncate"
           style={{
-            width: `${widthPercentage - 1}%`,
-            left: `${leftPosition}%`,
+            width: `${widthPercentage}%`,
+            left: `${index === 0 ? leftPosition : leftPosition}%`, // Adjust start position without space
           }}
         >
           <span>{trimmedName}</span>
@@ -85,6 +86,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
       );
     });
   };
+  
 
   return (
     <div
