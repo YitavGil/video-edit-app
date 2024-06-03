@@ -14,7 +14,7 @@ const PlayButton: React.FC<PlayButtonProps> = ({
   isPlaying,
 }) => {
   return (
-    <div className="flex items-center gap-2 mx-3.5">
+    <div className="flex flex-row-reverse items-center  gap-2 mx-3.5">
       <button
         onClick={onClick}
         disabled={disabled}

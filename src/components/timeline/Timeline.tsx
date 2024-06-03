@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDrop } from "react-dnd";
 import { FaTimes } from "react-icons/fa";
+import { RiZoomInFill, RiZoomOutFill  } from "react-icons/ri";
 
 interface VideoFile {
   name: string;
@@ -16,6 +17,7 @@ interface TimelineProps {
 
 const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
   const [cursorPosition, setCursorPosition] = useState<number>(0);
+  const [timelineScale, setTimelineScale] = useState<number>(1); // Initial scale
 
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "VIDEO",
@@ -26,6 +28,17 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
       isOver: !!monitor.isOver(),
     }),
   }));
+
+  const handleZoomIn = () => {
+    setTimelineScale((prevScale) => prevScale + 0.1); // Increase scale by 0.1
+  };
+
+  const handleZoomOut = () => {
+    if (timelineScale > 0.1) {
+      // Ensure scale doesn't go negative
+      setTimelineScale((prevScale) => prevScale - 0.1); // Decrease scale by 0.1
+    }
+  };
 
   const handleCursorPositionChange = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -45,9 +58,11 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
   const renderVideoBlocks = () => {
     let accumulatedTime = 0;
     return videos.map((video, index) => {
-      const trimmedName = video.name.length > 10 ? `${video.name.slice(0, 10)}...` : video.name;
-      const leftPosition = (accumulatedTime / maxTime) * 100;
-      const widthPercentage = (video.duration / maxTime) * 100;
+      const trimmedName =
+        video.name.length > 10 ? `${video.name.slice(0, 10)}...` : video.name;
+      const leftPosition = (accumulatedTime / maxTime) * 100 * timelineScale; // Adjust left position based on scale
+      const widthPercentage =
+        (video.duration / maxTime) * 100 * timelineScale; // Adjust width based on scale
       accumulatedTime += video.duration;
       return (
         <div
@@ -78,13 +93,19 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
       }`}
       onClick={handleCursorPositionChange}
     >
-      <h2 className="text-xl mb-6">Timeline (sec)</h2>
+      <h2 className="text-xl mb-1">Timeline (sec)</h2>
+      <div className="flex mb-5">
+        <button onClick={handleZoomIn} className="mr-2">
+         <RiZoomInFill className="text-orange-500 w-6 h-6" />
+        </button>
+        <button onClick={handleZoomOut}><RiZoomOutFill className="text-orange-500 w-6 h-6" /></button>
+      </div>
       <div className="relative h-10">
         {[...Array(maxTime).keys()].map((second) => (
           <div
             key={second}
             className="absolute top-0 left-0 h-full w-px bg-gray-400"
-            style={{ left: `${second}%` }}
+            style={{ left: `${second * timelineScale}%` }} // Adjust left position based on scale
           >
             <span className="absolute text-xs -top-4">{second + 1}</span>
           </div>
@@ -95,6 +116,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
           style={{ left: `${cursorPosition}%` }}
         ></div>
       </div>
+      
     </div>
   );
 };
