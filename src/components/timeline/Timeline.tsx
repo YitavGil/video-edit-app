@@ -40,7 +40,6 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
       setTimelineScale((prevScale) => prevScale - 0.1); // Decrease scale by 0.1
     }
   };
-console.log(timelineScale);
 
   const handleCursorPositionChange = (
     e: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -109,7 +108,7 @@ console.log(timelineScale);
             className="absolute top-0 left-0 h-full w-px bg-gray-400"
             style={{ left: `${second * timelineScale}%` }} // Adjust left position based on scale
           >
-            <span className="absolute text-xs -top-4">{second + 1}</span>
+            <span className="absolute text-xs -top-4 hidden lg:block">{second + 1}</span>
           </div>
         ))}
         {renderVideoBlocks()}
