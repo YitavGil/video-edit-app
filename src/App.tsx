@@ -81,6 +81,7 @@ const App: React.FC = () => {
           onDrop={handleDrop}
           onPlay={handlePlay}
           playing={playing} // Pass playing state to Main
+          timelineVideos={timelineVideos}
         />
         <Timeline
           videos={timelineVideos}

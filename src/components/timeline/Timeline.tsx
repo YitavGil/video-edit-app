@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDrop } from "react-dnd";
 import { FaTimes, FaPlus, FaMinus } from "react-icons/fa";
+import { RiZoomInFill, RiZoomOutFill } from "react-icons/ri";
 
 interface VideoFile {
   name: string;
@@ -51,12 +52,12 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
 
   return (
     <div>
-      <div className="flex justify-end mb-2">
+      <div className="flex justify-start mb-2 mx-2">
         <button onClick={handleZoomIn} className="mr-2">
-          <FaPlus />
+          <RiZoomInFill className="w-8 h-8 text-orange-500" />
         </button>
         <button onClick={handleZoomOut}>
-          <FaMinus />
+          <RiZoomOutFill className="w-8 h-8 text-orange-500" />
         </button>
       </div>
       <div

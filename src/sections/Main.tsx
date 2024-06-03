@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import VideoList from '../components/video/VideoList';
 import VideoPreview from '../components/video/VideoPreview';
 import PlayButton from '../components/UI/PlayButton';
@@ -16,12 +16,25 @@ interface MainProps {
   onDrop: (video: VideoFile) => void;
   onPlay: () => void;
   playing: boolean; // Add playing prop
+  timelineVideos: VideoFile[]
 }
 
-const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onDrop, onPlay, playing }) => {
+const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onDrop, onPlay, playing, timelineVideos }) => {
+  const [isPlaying, setIsPlaying] = useState(playing);
+
+  useEffect(() => {
+    setIsPlaying(playing);
+  }, [playing]);
+
   const handlePlayClick = () => {
-    onPlay();
+    if (isPlaying) {
+      setIsPlaying(false);
+    } else {
+      onPlay();
+      setIsPlaying(true);
+    }
   };
+
 
   return (
     <div className="flex flex-col md:flex-row flex-1">
@@ -29,8 +42,8 @@ const Main: React.FC<MainProps> = ({ videos, previewUrls, onPreview, onDrop, onP
         <VideoList videos={videos} onPreview={onPreview} />
       </div>
       <div className="flex-1">
-        <VideoPreview videoUrls={previewUrls} playing={playing} /> {/* Pass playing prop */}
-        <PlayButton onClick={handlePlayClick} disabled={videos.length === 0} />
+        <VideoPreview videoUrls={previewUrls} playing={isPlaying} />
+        <PlayButton onClick={handlePlayClick} disabled={timelineVideos.length < 1} isPlaying={isPlaying} />
       </div>
     </div>
   );

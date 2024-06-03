@@ -2,13 +2,18 @@ import React from 'react';
 
 interface PlayButtonProps {
   onClick: () => void;
-  disabled?: boolean; // Make the disabled prop optional
+  disabled: boolean;
+  isPlaying: boolean; // Add isPlaying prop
 }
 
-const PlayButton: React.FC<PlayButtonProps> = ({ onClick, disabled }) => {
+const PlayButton: React.FC<PlayButtonProps> = ({ onClick, disabled, isPlaying }) => {
   return (
-    <button onClick={onClick} disabled={disabled} className="bg-blue-500 text-white px-4 py-2 mt-4 rounded-lg cursor-pointer">
-      Play
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className="mt-4 px-4 py-2 bg-blue-500 text-white rounded disabled:bg-gray-400"
+    >
+      {isPlaying ? 'Pause Timeline' : 'Play Timeline'}
     </button>
   );
 };
