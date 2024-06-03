@@ -60,7 +60,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
         >
           <span>{trimmedName}</span>
           <button
-            className="absolute top-0 right-0 text-red-500 bg-transparent border-none"
+            className="absolute top-0 right-0 text-red-800 bg-transparent border-none"
             onClick={() => handleRemoveVideo(index)}
           >
             <FaTimes />
@@ -78,7 +78,7 @@ const Timeline: React.FC<TimelineProps> = ({ videos, onDrop, onRemove }) => {
       }`}
       onClick={handleCursorPositionChange}
     >
-      <h2 className="text-xl mb-2">Timeline</h2>
+      <h2 className="text-xl mb-6">Timeline (sec)</h2>
       <div className="relative h-10">
         {[...Array(maxTime).keys()].map((second) => (
           <div

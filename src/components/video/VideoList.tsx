@@ -15,7 +15,7 @@ interface VideoListProps {
 
 const VideoList: React.FC<VideoListProps> = ({ videos, onPreview }) => {
   return (
-    <div className="mt-5 p-4 border border-gray-300 rounded-lg md:w-3/4 w-full">
+    <div className="mt-5 p-4 rounded-lg md:w-3/4 w-full">
       <div className="flex items-center mb-4">
         <h2 className="text-xl mr-2">All Scenes</h2>
         <MdInfo data-tooltip-id="infoTooltip" data-tooltip-content="Uploaded videos will be added to this list" className='cursor-pointer text-orange-500 w-6 h-5' />

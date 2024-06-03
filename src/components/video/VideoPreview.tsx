@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import ReactPlayer from 'react-player';
 
-
 interface VideoPreviewProps {
   videoUrls: string[];
-  playing: boolean; // Add playing prop
+  playing: boolean;
 }
 
 const VideoPreview: React.FC<VideoPreviewProps> = ({ videoUrls, playing }) => {
@@ -15,20 +14,24 @@ const VideoPreview: React.FC<VideoPreviewProps> = ({ videoUrls, playing }) => {
   }, [videoUrls]);
 
   const handleEnded = () => {
-    setCurrentVideoIndex((prevIndex) => (prevIndex + 1) % videoUrls.length);
+    if (currentVideoIndex < videoUrls.length - 1) {
+      setCurrentVideoIndex((prevIndex) => prevIndex + 1);
+    } else {
+      setCurrentVideoIndex(0);
+    }
   };
 
   return (
-    <div className="mt-4 p-4 border border-gray-300 rounded-lg w-full relative">
+    <div className="mt-4 p-4 rounded-lg w-full relative">
       <h2 className="text-xl mb-4">Video Preview</h2>
       {videoUrls.length > 0 ? (
         <ReactPlayer
-          key={videoUrls.join(',')}
+          key={`${currentVideoIndex}-${videoUrls[currentVideoIndex]}`}
           url={videoUrls[currentVideoIndex]}
           controls
           width="100%"
           height="auto"
-          playing={playing} // Use playing prop to control playback
+          playing={playing}
           onEnded={handleEnded}
         />
       ) : (
